@@ -1,0 +1,45 @@
+type name = string
+type duration = int
+type symbol = Note of name * duration | Rest of duration
+val str_symbol : symbol -> string
+val x : symbol
+val y : symbol
+val z : symbol
+val get_duration : symbol -> duration
+val d : duration
+val simple_sheet_music_tests :
+  string * (symbol -> duration) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
+  ((symbol -> string) * (int -> string)) option *
+  (string option * symbol * (int, 'b) result) list
+val sheet_music_tests :
+  string * (symbol -> duration) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
+  ((symbol -> string) * (int -> string)) option *
+  (string option * symbol * (int, 'b) result) list
+type data = int
+type tree = Node of tree * data * tree | Leaf of data
+val str_tree : tree -> string
+val str_int_list : int list -> string
+val traverse : tree -> unit
+val traverse2 : tree -> data list
+val traverse2_pre : 'a -> 'b list
+val traverse2_post : 'a -> 'b list
+val my_tree : tree
+val v : data list
+val tree_tests :
+  string * (tree -> data list) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
+  ((tree -> string) * (int list -> string)) option *
+  (string option * tree * (int list, 'b) result) list
+val tree_tests_pre :
+  string * ('a -> 'b list) * ('c -> 'c -> bool) * (exn -> exn -> bool) *
+  ((tree -> string) * (int list -> string)) option * 'd list
+val tree_tests_post :
+  string * ('a -> 'b list) * ('c -> 'c -> bool) * (exn -> exn -> bool) *
+  ((tree -> string) * (int list -> string)) option * 'd list
+val sum : int -> int
+val simple_sum_tests :
+  string * (int -> int) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
+  ((int -> string) * (int -> string)) option *
+  ('b option * int * (int, 'c) result) list
+val sum_tests :
+  string * (int -> int) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
+  ((int -> string) * (int -> string)) option * 'b list

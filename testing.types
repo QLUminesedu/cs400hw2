@@ -1,0 +1,14 @@
+exception TestTimeout of int
+val test_timeout : int
+val test_counts : (int * int) ref
+val run_test : ('a -> 'b) * 'a -> ('b, exn) result
+val list_check :
+  string * ('a -> 'b) * ('b -> 'b -> bool) * (exn -> exn -> bool) *
+  (('a -> string) * ('b -> string)) option *
+  (string option * 'a * ('b, exn) result) list -> int * int
+val run_tests :
+  string * ('a -> 'b) * ('b -> 'b -> bool) * (exn -> exn -> bool) *
+  (('a -> string) * ('b -> string)) option *
+  (string option * 'a * ('b, exn) result) list -> int * int
+val get_test_counts : int * int -> int * int
+val reset_test_counts : unit -> unit

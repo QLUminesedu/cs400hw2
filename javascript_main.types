@@ -1,0 +1,6 @@
+val get_ast : in_channel -> Javascript_ast.start_t
+val get_expr : Javascript_ast.program_t -> Javascript_ast.expr_t
+val parse_string : string -> Javascript_ast.program_t
+val parse_expr : string -> Javascript_ast.expr_t
+val parse_sexp : string -> Javascript_ast.sexp_t
+val parse_test : string -> Javascript_ast.unit_test_t list

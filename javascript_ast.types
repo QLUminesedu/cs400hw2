@@ -1,0 +1,335 @@
+val eq_base : 'a -> 'a -> bool
+val eq_option : ('a -> 'a -> bool) -> 'a option -> 'a option -> bool
+val eq_pair :
+  ('a -> 'a -> bool) -> ('b -> 'b -> bool) -> 'a * 'b -> 'a * 'b -> bool
+val eq_list : ('a -> 'a -> bool) -> 'a list -> 'a list -> bool
+val str_option : ('a -> string) -> 'a option -> string
+val str_pair : ('a -> string) -> ('b -> string) -> 'a * 'b -> string
+val str_list : ('a -> string) -> 'a list -> string
+val str_list_helper : ('a -> string) -> 'a list -> bool -> string
+val str_x_list : ('a -> string) -> 'a list -> string -> string
+module StringSet :
+  sig
+    type elt = string
+    type t
+    val empty : t
+    val is_empty : t -> bool
+    val mem : elt -> t -> bool
+    val add : elt -> t -> t
+    val singleton : elt -> t
+    val remove : elt -> t -> t
+    val union : t -> t -> t
+    val inter : t -> t -> t
+    val disjoint : t -> t -> bool
+    val diff : t -> t -> t
+    val compare : t -> t -> int
+    val equal : t -> t -> bool
+    val subset : t -> t -> bool
+    val iter : (elt -> unit) -> t -> unit
+    val map : (elt -> elt) -> t -> t
+    val fold : (elt -> 'a -> 'a) -> t -> 'a -> 'a
+    val for_all : (elt -> bool) -> t -> bool
+    val exists : (elt -> bool) -> t -> bool
+    val filter : (elt -> bool) -> t -> t
+    val partition : (elt -> bool) -> t -> t * t
+    val cardinal : t -> int
+    val elements : t -> elt list
+    val min_elt : t -> elt
+    val min_elt_opt : t -> elt option
+    val max_elt : t -> elt
+    val max_elt_opt : t -> elt option
+    val choose : t -> elt
+    val choose_opt : t -> elt option
+    val split : elt -> t -> t * bool * t
+    val find : elt -> t -> elt
+    val find_opt : elt -> t -> elt option
+    val find_first : (elt -> bool) -> t -> elt
+    val find_first_opt : (elt -> bool) -> t -> elt option
+    val find_last : (elt -> bool) -> t -> elt
+    val find_last_opt : (elt -> bool) -> t -> elt option
+    val of_list : elt list -> t
+    val to_seq_from : elt -> t -> elt Seq.t
+    val to_seq : t -> elt Seq.t
+    val add_seq : elt Seq.t -> t -> t
+    val of_seq : elt Seq.t -> t
+  end
+module IntMap :
+  sig
+    type key = int
+    type +'a t
+    val empty : 'a t
+    val is_empty : 'a t -> bool
+    val mem : key -> 'a t -> bool
+    val add : key -> 'a -> 'a t -> 'a t
+    val update : key -> ('a option -> 'a option) -> 'a t -> 'a t
+    val singleton : key -> 'a -> 'a t
+    val remove : key -> 'a t -> 'a t
+    val merge :
+      (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
+    val union : (key -> 'a -> 'a -> 'a option) -> 'a t -> 'a t -> 'a t
+    val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
+    val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+    val iter : (key -> 'a -> unit) -> 'a t -> unit
+    val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+    val for_all : (key -> 'a -> bool) -> 'a t -> bool
+    val exists : (key -> 'a -> bool) -> 'a t -> bool
+    val filter : (key -> 'a -> bool) -> 'a t -> 'a t
+    val partition : (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
+    val cardinal : 'a t -> int
+    val bindings : 'a t -> (key * 'a) list
+    val min_binding : 'a t -> key * 'a
+    val min_binding_opt : 'a t -> (key * 'a) option
+    val max_binding : 'a t -> key * 'a
+    val max_binding_opt : 'a t -> (key * 'a) option
+    val choose : 'a t -> key * 'a
+    val choose_opt : 'a t -> (key * 'a) option
+    val split : key -> 'a t -> 'a t * 'a option * 'a t
+    val find : key -> 'a t -> 'a
+    val find_opt : key -> 'a t -> 'a option
+    val find_first : (key -> bool) -> 'a t -> key * 'a
+    val find_first_opt : (key -> bool) -> 'a t -> (key * 'a) option
+    val find_last : (key -> bool) -> 'a t -> key * 'a
+    val find_last_opt : (key -> bool) -> 'a t -> (key * 'a) option
+    val map : ('a -> 'b) -> 'a t -> 'b t
+    val mapi : (key -> 'a -> 'b) -> 'a t -> 'b t
+    val to_seq : 'a t -> (key * 'a) Seq.t
+    val to_seq_from : key -> 'a t -> (key * 'a) Seq.t
+    val add_seq : (key * 'a) Seq.t -> 'a t -> 'a t
+    val of_seq : (key * 'a) Seq.t -> 'a t
+  end
+module StringMap :
+  sig
+    type key = string
+    type +'a t
+    val empty : 'a t
+    val is_empty : 'a t -> bool
+    val mem : key -> 'a t -> bool
+    val add : key -> 'a -> 'a t -> 'a t
+    val update : key -> ('a option -> 'a option) -> 'a t -> 'a t
+    val singleton : key -> 'a -> 'a t
+    val remove : key -> 'a t -> 'a t
+    val merge :
+      (key -> 'a option -> 'b option -> 'c option) -> 'a t -> 'b t -> 'c t
+    val union : (key -> 'a -> 'a -> 'a option) -> 'a t -> 'a t -> 'a t
+    val compare : ('a -> 'a -> int) -> 'a t -> 'a t -> int
+    val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
+    val iter : (key -> 'a -> unit) -> 'a t -> unit
+    val fold : (key -> 'a -> 'b -> 'b) -> 'a t -> 'b -> 'b
+    val for_all : (key -> 'a -> bool) -> 'a t -> bool
+    val exists : (key -> 'a -> bool) -> 'a t -> bool
+    val filter : (key -> 'a -> bool) -> 'a t -> 'a t
+    val partition : (key -> 'a -> bool) -> 'a t -> 'a t * 'a t
+    val cardinal : 'a t -> int
+    val bindings : 'a t -> (key * 'a) list
+    val min_binding : 'a t -> key * 'a
+    val min_binding_opt : 'a t -> (key * 'a) option
+    val max_binding : 'a t -> key * 'a
+    val max_binding_opt : 'a t -> (key * 'a) option
+    val choose : 'a t -> key * 'a
+    val choose_opt : 'a t -> (key * 'a) option
+    val split : key -> 'a t -> 'a t * 'a option * 'a t
+    val find : key -> 'a t -> 'a
+    val find_opt : key -> 'a t -> 'a option
+    val find_first : (key -> bool) -> 'a t -> key * 'a
+    val find_first_opt : (key -> bool) -> 'a t -> (key * 'a) option
+    val find_last : (key -> bool) -> 'a t -> key * 'a
+    val find_last_opt : (key -> bool) -> 'a t -> (key * 'a) option
+    val map : ('a -> 'b) -> 'a t -> 'b t
+    val mapi : (key -> 'a -> 'b) -> 'a t -> 'b t
+    val to_seq : 'a t -> (key * 'a) Seq.t
+    val to_seq_from : key -> 'a t -> (key * 'a) Seq.t
+    val add_seq : (key * 'a) Seq.t -> 'a t -> 'a t
+    val of_seq : (key * 'a) Seq.t -> 'a t
+  end
+val my_unescaped : string -> string
+val strip_quotes : string -> string * bool
+type start_t =
+    JavascriptProgram of pos_t * program_t
+  | SexpProgram of pos_t * sexp_t
+  | TestProgram of pos_t * unit_test_t list
+and sexp_t =
+    IdentAtom of pos_t * ident_t
+  | StrAtom of pos_t * string
+  | NumAtom of pos_t * float
+  | BoolAtom of pos_t * bool
+  | List of pos_t * sexp_t list
+and sexp1_t = sexp_t
+and sexp1_2_1_t = sexp_t list
+and tests_t = unit_test_t list
+and tests_0_0_t = unit_test_t list list
+and unit_test_t =
+    ident_t * StringSet.t * ident_t * string option * string option *
+    sexp_t * sexp_t
+and idents_t = ident_t list
+and test_t = unit_test_t list
+and test_0_1_t = ident_t list option
+and sexp2_t = sexp_t
+and program_t =
+    ExprProgram of pos_t * expr_t
+  | StmtProgram of pos_t * stmt_t * program_t
+and stmt_t =
+    ConstStmt of pos_t * ident_t * expr_t
+  | LetStmt of pos_t * ident_t * expr_t
+  | AssignStmt of pos_t * expr_t * expr_t
+and typ_t =
+    UnitType
+  | BoolType
+  | NumType
+  | StrType
+  | TupleType of typ_t list
+  | FuncType of typ_t * typ_t
+and var_access_t = Mutable | Immutable
+and uop_t = NotUop | NegUop
+and bop_t =
+    AndBop
+  | OrBop
+  | PlusBop
+  | MinusBop
+  | TimesBop
+  | DivBop
+  | EqBop
+  | NeqBop
+  | LtBop
+  | LteBop
+  | GtBop
+  | GteBop
+and expr_t =
+    VarExpr of pos_t * ident_t
+  | ValExpr of pos_t * value_t
+  | BlockExpr of pos_t * block_t
+  | FuncExpr of pos_t * lambda_t
+  | UopExpr of pos_t * uop_t * expr_t
+  | BopExpr of pos_t * expr_t * bop_t * expr_t
+  | IfExpr of pos_t * expr_t * expr_t * expr_t
+  | PrintExpr of pos_t * expr_t
+  | CallExpr of pos_t * expr_t * expr_t list
+  | FieldExpr of pos_t * expr_t * ident_t
+  | ObjectExpr of pos_t * field_t list
+and expr1_t = expr_t
+and value_t =
+    NumVal of float
+  | BoolVal of bool
+  | StrVal of string
+  | UndefVal
+  | ClosureVal of name_map_t * lambda_t
+  | RefVal of address_t
+and ident_t = string
+and address_t = int
+and typed_ident_t = ident_t * typ_t option
+and name_map_t = int StringMap.t
+and environment_t = name_map_t list * ident_map_t
+and ident_map_t = (var_access_t * value_t) IntMap.t
+and lambda_t = ident_t option * typed_ident_t list * block_t * typ_t option
+and heap_t = object_t list
+and object_t = value_t StringMap.t
+and value1_t = value_t
+and lambda1_t = lambda_t
+and lambda1_0_1_t = string option
+and block_t =
+    ReturnBlock of pos_t * expr_t
+  | StmtBlock of pos_t * stmt_t * block_t
+and field_list_t = field_t list
+and field_list_1_1_t = field_list_1_1_0_t list
+and field_list_1_1_0_t = FieldList_1_1_0_0 of pos_t * (ident_t * expr_t)
+and expr_list_t = expr_t list
+and expr_list_1_1_t = expr_list_1_1_0_t list
+and expr_list_1_1_0_t = ExprList_1_1_0_0 of pos_t * expr_t
+and ident_list_t = ident_t list
+and ident_list_1_1_t = ident_list_1_1_0_t list
+and ident_list_1_1_0_t = IdentList_1_1_0_0 of pos_t * string
+and field_t = ident_t * expr_t
+and bool_t = bool
+and pos_t = NoPos | Pos of string * int * int
+val filename : string ref
+exception Parse_error of string
+exception Lexing_error of string
+exception General_error of string
+val do_error : pos_t -> string -> string
+val die_error : pos_t -> string -> 'a
+val get_current_pos : unit -> pos_t
+val get_pos : Lexing.position -> pos_t
+val pos_error : string -> Lexing.position -> string
+val parse_error : string -> 'a
+val lex_error : string -> Lexing.lexbuf -> 'a
+val do_newline : Lexing.lexbuf -> unit
+val die_system_error : string -> 'a
+val count_newlines : string -> Lexing.lexbuf -> int
+val read_environment :
+  environment_t * string -> (var_access_t * value_t) option
+val update_environment :
+  environment_t * string * (var_access_t * value_t) ->
+  environment_t * (var_access_t * value_t) option
+val unique_id : int ref
+val push_environment :
+  environment_t * string * (var_access_t * value_t) -> environment_t
+val pop_environment : environment_t -> environment_t
+val empty_env : 'a StringMap.t list * 'b IntMap.t
+val eq_float : Float.t * Float.t -> bool
+val js_float_of_string : string -> float
+val str_float : Float.t -> string
+val str_typ : typ_t -> string
+val str_access : var_access_t -> string
+val str_program : program_t -> string
+val str_stmt : stmt_t -> string
+val str_expr : expr_t -> string
+val str_bop : bop_t -> string
+val str_uop : uop_t -> string
+val str_value : value_t -> string
+val str_value_helper : value_t -> bool -> string
+val str_lambda : lambda_t -> string
+val str_block : block_t -> string
+val str_typed_var : typed_ident_t -> ident_t
+val str_ident : ident_t -> ident_t
+val str_name_map : name_map_t -> string
+val str_ident_map : (var_access_t * value_t) IntMap.t -> string
+val str_sexp : sexp_t -> string
+val eq_typ : typ_t -> typ_t -> bool
+val eq_program : program_t -> program_t -> bool
+val eq_stmt : stmt_t -> stmt_t -> bool
+val eq_expr : expr_t -> expr_t -> bool
+val eq_bop : bop_t -> bop_t -> bool
+val eq_uop : uop_t -> uop_t -> bool
+val eq_value : value_t -> value_t -> bool
+val eq_lambda : lambda_t -> lambda_t -> bool
+val eq_block : block_t -> block_t -> bool
+val eq_typed_var : typed_ident_t -> typed_ident_t -> bool
+val eq_ident : ident_t -> ident_t -> bool
+val eq_sexp : sexp_t -> sexp_t -> bool
+val to_num : value_t -> float
+val to_bool : value_t -> bool
+val to_str : value_t -> string
+val str_environment :
+  name_map_t list * (var_access_t * value_t) IntMap.t -> string
+val str_environment_simple : environment_t -> string
+val str_heap : value_t StringMap.t list -> string
+val str_object : value_t StringMap.t -> string
+exception NotExpr of program_t
+exception ImmutableVar of ident_t
+exception UndeclaredVar of ident_t
+exception InvalidCall of expr_t
+exception UnimplementedExpr of expr_t
+exception UnimplementedStmt of stmt_t
+exception RefError of expr_t
+val eq_exn : exn -> exn -> bool
+val sexp_to_program : sexp_t -> program_t
+val sexp_to_stmt : sexp_t -> stmt_t
+val sexp_to_expr : sexp_t -> expr_t
+val sexp_to_field : sexp_t -> field_t
+val sexp_to_block : sexp_t -> block_t
+val sexp_to_uop : sexp_t -> uop_t
+val sexp_to_bop : sexp_t -> bop_t
+val sexp_to_value : sexp_t -> value_t
+val sexp_to_lambda : sexp_t -> lambda_t
+val sexp_to_ident : sexp_t -> ident_t
+val make_sexp : pos_t -> ident_t -> sexp_t list -> sexp_t
+val program_to_sexp : program_t -> sexp_t
+val stmt_to_sexp : stmt_t -> sexp_t
+val block_to_sexp : block_t -> sexp_t
+val expr_to_sexp : expr_t -> sexp_t
+val lambda_to_sexp : pos_t -> lambda_t -> sexp_t
+val value_to_sexp : value_t -> sexp_t
+val value_to_sexp_helper : pos_t -> value_t -> bool -> sexp_t
+val uop_to_sexp : uop_t -> sexp_t
+val bop_to_sexp : bop_t -> sexp_t
+val result_to_sexp : ('a -> sexp_t) -> ('a, exn) result -> sexp_t
+val exn_to_sexp : exn -> sexp_t
