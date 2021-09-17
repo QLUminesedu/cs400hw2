@@ -21,8 +21,8 @@ val str_tree : tree -> string
 val str_int_list : int list -> string
 val traverse : tree -> unit
 val traverse2 : tree -> data list
-val traverse2_pre : 'a -> 'b list
-val traverse2_post : 'a -> 'b list
+val traverse2_pre : tree -> data list
+val traverse2_post : tree -> data list
 val my_tree : tree
 val v : data list
 val tree_tests :
@@ -30,11 +30,14 @@ val tree_tests :
   ((tree -> string) * (int list -> string)) option *
   (string option * tree * (int list, 'b) result) list
 val tree_tests_pre :
-  string * ('a -> 'b list) * ('c -> 'c -> bool) * (exn -> exn -> bool) *
-  ((tree -> string) * (int list -> string)) option * 'd list
+  string * (tree -> data list) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
+  ((tree -> string) * (int list -> string)) option *
+  (string option * tree * (int list, 'b) result) list
 val tree_tests_post :
-  string * ('a -> 'b list) * ('c -> 'c -> bool) * (exn -> exn -> bool) *
-  ((tree -> string) * (int list -> string)) option * 'd list
+  string * (tree -> data list) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
+  ((tree -> string) * (int list -> string)) option *
+  (string option * tree * (int list, 'b) result) list
+val pow : int * int -> int
 val sum : int -> int
 val simple_sum_tests :
   string * (int -> int) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
@@ -42,4 +45,5 @@ val simple_sum_tests :
   ('b option * int * (int, 'c) result) list
 val sum_tests :
   string * (int -> int) * ('a -> 'a -> bool) * (exn -> exn -> bool) *
-  ((int -> string) * (int -> string)) option * 'b list
+  ((int -> string) * (int -> string)) option *
+  ('b option * int * (int, 'c) result) list

@@ -41,12 +41,11 @@ let simple_sheet_music_tests = ("Sheet Music", get_duration, (=), eq_exn, Some(s
 ])
 
 let sheet_music_tests = ("Sheet Music", get_duration, (=), eq_exn, Some(str_symbol,string_of_int), [
-  (* TODO - add your unit tests here *)
-  (Some("unit test1"), Rest(3), Ok(3)) 
-  (Some("unit test2"), Note("78", 4), Ok(4))
-  (Some("unit test3"), Note("cs", 50), Ok(50))
-  (Some("unit test4"), Rest(2), Ok(2))
-  (Some("unit test5"), Note("str". 2), Ok(2))
+  (Some("unit test1"), Rest(3), Ok(3)); 
+  (Some("unit test2"), Note("78", 4), Ok(4));
+  (Some("unit test3"), Note("cs", 50), Ok(50));
+  (Some("unit test4"), Note("c", 2), Ok(2));
+  (Some("unit test5"), Rest(10), Ok(10))
 ])
 
 (* NOTE - you can run your own tests like this: *)
@@ -89,13 +88,17 @@ let rec traverse2 = fun t -> match t with
 
 (* returns the proper order for the Pre-Order traversal (as a list) *)
 (* TODO *)
-let rec traverse2_pre = fun t ->
-  []
+let rec traverse2_pre = fun t -> match t with
+  | Node(l, d, r) -> 
+    [d] @ (traverse2 l) @ (traverse2 r)
+  | Leaf(d) -> [d]
 
 (* returns the proper order for the Post-Order traversal (as a list) *)
 (* TODO *)
-let rec traverse2_post = fun t ->
-  []
+let rec traverse2_post = fun t -> match t with
+  | Node(l, d, r) -> 
+    (traverse2 l) @ (traverse2 r) @ [d]
+  | Leaf(d) -> [d]
 
 (*
 this encodes the following tree:
@@ -119,10 +122,20 @@ let tree_tests = ("Tree (In-order)", traverse2, (=), eq_exn, Some(str_tree,str_i
 
 let tree_tests_pre = ("Tree (Pre-order)", traverse2_pre, (=), eq_exn, Some(str_tree,str_int_list), [
   (* TODO - add your unit tests here *)
+      (Some("Test1"), Node(Node(Leaf(1),2,Leaf(3)),4,Leaf(5)), Ok([4; 1; 2; 3; 5]));
+    (Some("Test2"), Node(Node(Leaf(5),4,Leaf(3)),2,Leaf(1)), Ok([2; 5; 4; 3; 1]));
+    (Some("Test3"), Node(Node(Leaf(1),5,Leaf(4)),3,Leaf(2)), Ok([3; 1; 5; 4; 2]));
+    (Some("Test4"), Node(Node(Leaf(2),1,Leaf(5)),4,Leaf(3)), Ok([4; 2; 1; 5; 3]));
+    (Some("Test5"), Node(Node(Leaf(3),2,Leaf(1)),5,Leaf(4)), Ok([5; 3; 2; 1; 4]))
 ])
 
 let tree_tests_post = ("Tree (Post-order)", traverse2_post, (=), eq_exn, Some(str_tree,str_int_list), [
   (* TODO - add your unit tests here *)
+         (Some("Test1"), Node(Node(Leaf(1),2,Leaf(3)),4,Leaf(5)), Ok([1; 2; 3; 5; 4]));
+    (Some("Test2"), Node(Node(Leaf(5),4,Leaf(3)),2,Leaf(1)), Ok([5; 4; 3; 1; 2]));
+    (Some("Test3"), Node(Node(Leaf(1),5,Leaf(4)),3,Leaf(2)), Ok([1; 5; 4; 2; 3]));
+    (Some("Test4"), Node(Node(Leaf(2),1,Leaf(5)),4,Leaf(3)), Ok([2; 1; 5; 3; 4]));
+    (Some("Test5"), Node(Node(Leaf(3),2,Leaf(1)),5,Leaf(4)), Ok([3; 2; 1; 4; 5]))
 ])
 
 
@@ -140,8 +153,16 @@ let tree_tests_post = ("Tree (Post-order)", traverse2_post, (=), eq_exn, Some(st
   sum(4)  = 2 + 4 + 8 + 16 = 2*(1 + (2 + 4 + 8))
 *)
 (* TODO *)
+
+let rec pow ((x : int ), ( y : int)) : int =
+  match y with
+     0 -> 1
+    | _ -> 2 * pow(x,y-1)
+   (* Helper func that has power functiality*) 
 let rec sum (n : int) : int =
-   n
+  match n with
+     0 -> 0
+    | _ -> pow(2, n) + sum(n-1) 
 
 (***************)
 (** sum tests **)
@@ -155,4 +176,9 @@ let simple_sum_tests = ("Sum", sum, (=), eq_exn, Some(string_of_int,string_of_in
 
 let sum_tests = ("Sum", sum, (=), eq_exn, Some(string_of_int,string_of_int), [
   (* TODO - add your unit tests here *)
+  (None, 5, Ok(62));
+  (None, 4, Ok(30));
+  (None, 0, Ok(0));
+  (None, 6, Ok(126));
+  (None, 7, Ok(254))
 ])
