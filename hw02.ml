@@ -42,11 +42,11 @@ let simple_sheet_music_tests = ("Sheet Music", get_duration, (=), eq_exn, Some(s
 
 let sheet_music_tests = ("Sheet Music", get_duration, (=), eq_exn, Some(str_symbol,string_of_int), [
   (* TODO - add your unit tests here *)
-  (*Some("unit test1"), Rest(3), Ok(3)*) 
-  (*Some("unit test2"), Rest(4), Ok(4)*)
+  (Some("unit test1"), Rest(3), Ok(3)) 
+  (Some("unit test2"), Note("78", 4), Ok(4))
   (Some("unit test3"), Note("cs", 50), Ok(50))
-  (*Some("unit test4"), Rest(2), Ok(2)*)
-  (*Some("unit test5"), Rest(2), Ok(2)*)
+  (Some("unit test4"), Rest(2), Ok(2))
+  (Some("unit test5"), Note("str". 2), Ok(2))
 ])
 
 (* NOTE - you can run your own tests like this: *)
